@@ -76,9 +76,6 @@ const Home = ({ account, access, setAccess }) => {
     const fetchPosts = async () => {
       try{
       const res = await fetch(import.meta.env.VITE_GET_POSTS);
-      if(!res.ok){
-        throw new Error("Error!")
-      }
       const data = await res.json();
       setPosts(data.reverse());
     }
@@ -92,12 +89,9 @@ const Home = ({ account, access, setAccess }) => {
   useEffect(() => {
     const fetchAccounts = async () => {
       try{
-      const res = await fetch(import.meta.env.VITE_GET_ACCOUNT);
-      if(!res.ok){
-        throw new Error("Error!")
-      }
-      const data = await res.json();
-      setAccounts(data.reverse());
+        const res = await fetch(import.meta.env.VITE_GET_ACCOUNT);
+        const data = await res.json();
+        setAccounts(data.reverse());
       }
       catch(err){
         console.error(err.message);
