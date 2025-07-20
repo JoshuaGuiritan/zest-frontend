@@ -11890,4 +11890,8 @@ body {
 
 .cover {
   z-index: 1060;
+}
+
+.overflow-y {
+  overflow-y: "hidden";
 }/*# sourceMappingURL=index.css.map */

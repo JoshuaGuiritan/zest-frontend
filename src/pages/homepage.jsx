@@ -255,7 +255,7 @@ const Home = ({ account, access, setAccess }) => {
       </div>
 
 
-      <div className="vh-100 vw-100 d-flex justify-content-center align-items-center">
+      <div className="vh-100 vw-100 d-flex justify-content-center align-items-center overflow-y">
         <div class="container-fluid text-center text-light">
           <div class="row justify-content-evenly align-items-center vh-100">
             <div class="d-none col-xl-3 bg-dark d-xl-flex flex-column justify-content-start align-items-center p-5 rounded-2 border border-secondary vh80 overflow-y-scroll scroll-container">
