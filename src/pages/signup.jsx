@@ -32,7 +32,7 @@ const SignUp = () => {
     };
 
     try {
-      const res = await fetch("http://localhost:8000/api/signup", {
+      const res = await fetch(import.meta.env.VITE_POST_SIGNUP, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

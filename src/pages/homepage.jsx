@@ -35,7 +35,7 @@ const Home = ({ account, access, setAccess }) => {
 
   const fetchPosts = async () => {
     try {
-      const res = await fetch("http://localhost:8000/api/getposts");
+      const res = await fetch(import.meta.env.VITE_GET_POSTS);
       if (!res.ok) {
         return;
       }
@@ -64,7 +64,7 @@ const Home = ({ account, access, setAccess }) => {
       caption: caption,
     };
 
-    const res = await fetch("http://localhost:8000/api/createpost", {
+    const res = await fetch(import.meta.env.VITE_POST_CREATEPOST, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -80,7 +80,7 @@ const Home = ({ account, access, setAccess }) => {
 
   useEffect(() => {
     const fetchPosts = async () => {
-      const res = await fetch("http://localhost:8000/api/getposts");
+      const res = await fetch(import.meta.env.VITE_GET_POSTS);
       if (!res.ok) {
         return;
       }
@@ -95,7 +95,7 @@ const Home = ({ account, access, setAccess }) => {
 
   useEffect(() => {
     const fetchAccounts = async () => {
-      const res = await fetch("http://localhost:8000/api/getaccount");
+      const res = await fetch(import.meta.env.VITE_GET_ACCOUNT);
       if (!res.ok) {
         return;
       }
