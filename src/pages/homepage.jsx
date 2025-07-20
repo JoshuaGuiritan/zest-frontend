@@ -355,8 +355,8 @@ const Home = ({ account, access, setAccess }) => {
           >
             Create Post
           </button>
-          <button class="btn btn-primary mx-3 fs-6 px-2" onClick={reloading}>
-            <i class="bi bi-arrow-clockwise"></i> Reload
+          <button class="btn btn-primary mx-3 fs-6 px-2 rounded-pill" onClick={reloading}>
+            <i class="bi bi-arrow-clockwise"></i>
           </button>
         </div>
       </div>
