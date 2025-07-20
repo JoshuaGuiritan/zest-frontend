@@ -63,7 +63,7 @@ const SignUp = () => {
                   src="Images/logo.png"
                 />
 
-                <div class="form-floating mb-5 w-100">
+                <div class="form-floating mb-3 mt-5 w-100">
                   <input
                     type="text"
                     class={`form-control form-control-lg ${empty && !username && "is-invalid"} ${invalidU && "is-invalid"}`}

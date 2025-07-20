@@ -58,7 +58,7 @@ const SignIn = ({ setAccount, setAccess }) => {
                   src="Images/logo.png"
                 />
 
-                <div class="form-floating mb-5 w-100">
+                <div class="form-floating mb-3 mt-5 w-100">
                   <input
                     type="text"
                     class={`form-control ${empty && !username && "is-invalid"} ${invalid && "is-invalid"}`}
@@ -100,7 +100,7 @@ const SignIn = ({ setAccount, setAccess }) => {
                   Sign In
                 </button>
                 <Link to="/signup" class="btn btn-secondary btn-lg w-100">
-                  Create Account Here
+                  Create Account
                 </Link>
               </div>
             </form>
