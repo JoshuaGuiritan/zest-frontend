@@ -28,6 +28,7 @@ const Home = ({ account, access, setAccess }) => {
   const [accounts, setAccounts] = useState(null);
   const [spinner, setSpinner] = useState(false);
   const [valid, setValid] = useState(false);
+  const [reload, setReload] = useState(false);
 
   useEffect(() => {
     if (!log) {
@@ -35,7 +36,14 @@ const Home = ({ account, access, setAccess }) => {
     }
   }, []);
 
-  const fetchPosts = async () => {
+  const reloading = () => {
+    if(reload){
+      return setReload(false);
+    }
+    setReload(true);
+  }
+
+  const fetchPost = async () => {
     try {
       const res = await fetch(import.meta.env.VITE_GET_POSTS);
       const data = await res.json();
@@ -47,6 +55,45 @@ const Home = ({ account, access, setAccess }) => {
       setSpinner(false);
     }
   };
+
+  const fetchPosts = async () => {
+      setSpinner(true);
+      try{
+      const res = await fetch(import.meta.env.VITE_GET_POSTS);
+      if(!res.ok){
+        setSpinner(false);
+        return;
+      }
+      const data = await res.json();
+      if(data.length === 0){
+        setSpinner(false);
+        return;
+      }
+      setPosts(data.reverse());
+      setSpinner(false);
+    }
+    catch(err){
+      console.error(err.message);
+      setSpinner(false);
+    }
+    };
+
+    const fetchAccounts = async () => {
+      setSpinner(true);
+      try{
+        const res = await fetch(import.meta.env.VITE_GET_ACCOUNT);
+        if(!res.ok){
+          setSpinner(false);
+          return;
+        }
+        const data = await res.json();
+        setAccounts(data.reverse());
+      }
+      catch(err){
+        console.error(err.message);
+        setSpinner(false);
+      }
+    };
 
   const CreatePost = async (e) => {
     e.preventDefault();
@@ -76,53 +123,24 @@ const Home = ({ account, access, setAccess }) => {
     const verify = await res.json();
     setCaption("");
     setTitle("");
-    fetchPosts();
+    fetchPost();
   };
 
   useEffect(() => {
-    setSpinner(true);
-    const fetchPosts = async () => {
-      try{
-      const res = await fetch(import.meta.env.VITE_GET_POSTS);
-      if(!res.ok){
-        setSpinner(false);
-        return;
-      }
-      const data = await res.json();
-      if(data.length === 0){
-        setSpinner(false);
-        return;
-      }
-      setPosts(data.reverse());
-      setSpinner(false);
-    }
-    catch(err){
-      console.error(err.message);
-      setSpinner(false);
-    }
-    };
     fetchPosts();
   }, []);
 
   useEffect(() => {
-    setSpinner(true);
-    const fetchAccounts = async () => {
-      try{
-        const res = await fetch(import.meta.env.VITE_GET_ACCOUNT);
-        if(!res.ok){
-          setSpinner(false);
-          return;
-        }
-        const data = await res.json();
-        setAccounts(data.reverse());
-      }
-      catch(err){
-        console.error(err.message);
-        setSpinner(false);
-      }
-    };
     fetchAccounts();
   }, []);
+
+  useEffect(() => {
+    fetchPosts();
+  }, [reload]);
+
+  useEffect(() => {
+    fetchAccounts();
+  }, [reload]);
 
   const logout = () => {
     setAccess(false);
@@ -320,21 +338,28 @@ const Home = ({ account, access, setAccess }) => {
         </div>
       </div>
       {spinner && (
-                <div class="position-absolute top-0 start-0 vh-100 vw-100 bg-info bg-opacity-25 d-flex justify-content-center align-items-center cover">
+                <div class="position-absolute top-0 start-0 vh-100 vw-100 bg-info bg-opacity-25 d-flex justify-content-evenly align-items-center cover">
                   <div class="spinner-border text-primary" role="status">
                     <span class="visually-hidden">Loading...</span>
                   </div>
                 </div>
       )}
-      <button
-        class="d-block d-xl-none btn btn-primary btn-lg position-fixed bottom-0 start-50 translate-middle-x mb-3 z-index-5"
-        type="button"
-        data-bs-toggle="offcanvas"
-        data-bs-target="#staticBackdrop"
-        aria-controls="staticBackdrop"
-      >
-        Create Post
-      </button>
+      <div class="position-fixed bottom-0 start-50 translate-middle-x mb-3 z-index-5">
+        <div class="d-flex justify-content-center">
+          <button
+            class="d-block d-xl-none btn btn-success btn-lg mx-3 fs-6 px-2"
+            type="button"
+            data-bs-toggle="offcanvas"
+            data-bs-target="#staticBackdrop"
+            aria-controls="staticBackdrop"
+          >
+            Create Post
+          </button>
+          <button class="btn btn-primary mx-3 fs-6 px-2" onClick={reloading}>
+            <i class="bi bi-arrow-clockwise"></i> Reload
+          </button>
+        </div>
+      </div>
     </>
   );
 };
