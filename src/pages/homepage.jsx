@@ -36,9 +36,6 @@ const Home = ({ account, access, setAccess }) => {
   const fetchPosts = async () => {
     try {
       const res = await fetch(import.meta.env.VITE_GET_POSTS);
-      if (!res.ok) {
-        return;
-      }
       const data = await res.json();
       if(data.length === 0){
         return;
@@ -81,9 +78,6 @@ const Home = ({ account, access, setAccess }) => {
   useEffect(() => {
     const fetchPosts = async () => {
       const res = await fetch(import.meta.env.VITE_GET_POSTS);
-      if (!res.ok) {
-        return;
-      }
       const data = await res.json();
       if(data.length === 0){
         return;
@@ -96,10 +90,10 @@ const Home = ({ account, access, setAccess }) => {
   useEffect(() => {
     const fetchAccounts = async () => {
       const res = await fetch(import.meta.env.VITE_GET_ACCOUNT);
-      if (!res.ok) {
+      const data = await res.json();
+      if(data.length === 0){
         return;
       }
-      const data = await res.json();
       setAccounts(data.reverse());
     };
     fetchAccounts();
