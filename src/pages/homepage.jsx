@@ -90,6 +90,11 @@ const Home = ({ account, access, setAccess }) => {
     const fetchAccounts = async () => {
       try{
         const res = await fetch(import.meta.env.VITE_GET_ACCOUNT);
+        if(!res.ok){
+          const errorText = await res.text();
+          console.error("Failed to fetch accounts:", res.status, errorText);
+          setAccounts([]);
+        }
         const data = await res.json();
         setAccounts(data.reverse());
       }
