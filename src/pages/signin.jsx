@@ -50,7 +50,7 @@ const SignIn = ({ setAccount, setAccess }) => {
     <div class="d-flex flex-column justify-content-center align-items-center vh-100 vw-100 text-light">
       <div class="container">
         <div class="row justify-content-center">
-          <div class="col-4">
+          <div class="col-9 col-sm-8 col-md-7 col-lg-6 col-xl-5 col-xxl-4">
             <form onSubmit={LogIn} noValidate>
               <div class="container d-flex flex-column justify-content-center align-items-center">
                 <img
