@@ -10,6 +10,7 @@ const SignUp = () => {
   const [empty, setEmpty] = useState(false);
   const [invalidU, setInvalidU] = useState(false);
   const [invalidP, setInvalidP] = useState(false);
+  const [spinner, setSpinner] = useState(false);
 
   const Create = async (e) => {
     e.preventDefault();
@@ -32,6 +33,7 @@ const SignUp = () => {
     };
 
     try {
+      setSpinner(true);
       const res = await fetch(import.meta.env.VITE_POST_SIGNUP, {
         method: "POST",
         headers: {
@@ -41,11 +43,12 @@ const SignUp = () => {
       });
 
       const verify = await res.json();
+      setSpinner(false);
 
       if (!verify.verify) {
         return setInvalidU(true);
       }
-      navigate("/signin");
+      navigate("/");
     } catch (err) {
       setMessage("No Fetch! Try Again");
     }
@@ -55,7 +58,7 @@ const SignUp = () => {
     <div class="d-flex flex-column justify-content-center align-items-center vh-100 vw-100 text-light">
       <div class="container">
         <div class="row justify-content-center">
-          <div class="col-9 col-sm-8 col-md-7 col-lg-6 col-xl-5 col-xxl-4">
+          <div class="col-10 col-sm-9 col-md-8 col-lg-7 col-xl-6 col-xxl-5">
             <form onSubmit={Create}>
               <div class="container d-flex flex-column justify-content-center align-items-center">
                 <img
@@ -114,9 +117,16 @@ const SignUp = () => {
                 <button type="submit" class="btn btn-primary btn-lg mb-3 w-100">
                   Sign Up
                 </button>
-                <Link to="/signin" class="btn btn-secondary btn-lg w-100">
+                <Link to="/" class="btn btn-secondary btn-lg w-100">
                   Back to Sign In
                 </Link>
+                {spinner && (
+                <div class="position-absolute top-0 start-0 vh-100 vw-100 bg-info bg-opacity-25 d-flex justify-content-center align-items-center">
+                  <div class="spinner-border text-primary" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                  </div>
+                </div>
+                )}
               </div>
             </form>
           </div>

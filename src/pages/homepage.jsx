@@ -26,10 +26,12 @@ const Home = ({ account, access, setAccess }) => {
   ];
   const [posts, setPosts] = useState(null);
   const [accounts, setAccounts] = useState(null);
+  const [spinner, setSpinner] = useState(false);
+  const [valid, setValid] = useState(false);
 
   useEffect(() => {
     if (!log) {
-      navigate("/signin");
+      navigate("/");
     }
   }, []);
 
@@ -38,14 +40,18 @@ const Home = ({ account, access, setAccess }) => {
       const res = await fetch(import.meta.env.VITE_GET_POSTS);
       const data = await res.json();
       setPosts(data.reverse());
+      setSpinner(false);
+      setValid(true);
     } catch (err) {
       console.error(err);
+      setSpinner(false);
     }
   };
 
   const CreatePost = async (e) => {
     e.preventDefault();
     setEmpty(false);
+    setValid(false);
 
     if (!title || !caption) {
       return setEmpty(true);
@@ -58,6 +64,7 @@ const Home = ({ account, access, setAccess }) => {
       caption: caption,
     };
 
+    setSpinner(true);
     const res = await fetch(import.meta.env.VITE_POST_CREATEPOST, {
       method: "POST",
       headers: {
@@ -73,24 +80,37 @@ const Home = ({ account, access, setAccess }) => {
   };
 
   useEffect(() => {
+    setSpinner(true);
     const fetchPosts = async () => {
       try{
       const res = await fetch(import.meta.env.VITE_GET_POSTS);
+      if(!res.ok){
+        setSpinner(false);
+        return;
+      }
       const data = await res.json();
+      if(data.length === 0){
+        setSpinner(false);
+        return;
+      }
       setPosts(data.reverse());
+      setSpinner(false);
     }
     catch(err){
       console.error(err.message);
+      setSpinner(false);
     }
     };
     fetchPosts();
   }, []);
 
   useEffect(() => {
+    setSpinner(true);
     const fetchAccounts = async () => {
       try{
         const res = await fetch(import.meta.env.VITE_GET_ACCOUNT);
         if(!res.ok){
+          setSpinner(false);
           return;
         }
         const data = await res.json();
@@ -98,6 +118,7 @@ const Home = ({ account, access, setAccess }) => {
       }
       catch(err){
         console.error(err.message);
+        setSpinner(false);
       }
     };
     fetchAccounts();
@@ -105,7 +126,7 @@ const Home = ({ account, access, setAccess }) => {
 
   const logout = () => {
     setAccess(false);
-    navigate("/signin");
+    navigate("/");
   };
 
   return (
@@ -172,10 +193,54 @@ const Home = ({ account, access, setAccess }) => {
         </div>
       </nav>
 
+      <div class="offcanvas offcanvas-start offcanvas-dark bg-dark" data-bs-backdrop="static" tabindex="-1" id="staticBackdrop" aria-labelledby="staticBackdropLabel">
+        <div class="offcanvas-header">
+          <h5 class="offcanvas-title text-light" id="staticBackdropLabel"></h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body">
+          <div>
+            <form class="container-fluid" onSubmit={CreatePost} noValidate>
+                <div class="container justify-content-center">
+                  <h3 class="mb-4 fs-4 fw-bold text-light">Create Post</h3>
+                  <div class="form-floating mb-3 w-100">
+                    <input
+                      type="text"
+                      class={`form-control ${empty && !title && "is-invalid"} ${valid && "is-valid"}`}
+                      id="floatingInputDisabled"
+                      placeholder="Title"
+                      value={title}
+                      onChange={(e) => setTitle(e.target.value)}
+                    />
+                    <label for="floatingInputDisabled">Title</label>
+                    ${empty && !title && (<div class="invalid-feedback">Title is required.</div>)}
+                  </div>
+                  <div class="form-floating mb-4">
+                    <textarea
+                      class={`form-control py-5 ${empty && !caption && "is-invalid"} ${valid && "is-valid"}`}
+                      placeholder="Caption"
+                      id="floatingTextareaDisabled"
+                      value={caption}
+                      onChange={(e) => setCaption(e.target.value)}
+                    />
+                    <label for="floatingTextareaDisabled">Caption</label>
+                    {empty && !caption && (<div class="invalid-feedback">Caption is required.</div>)}
+                    {valid && (<div class="valid-feedback">Done.</div>)}
+                  </div>
+                  <button type="submit" class="btn btn-primary btn-lg w-100">
+                    Submit
+                  </button>
+                </div>
+              </form>
+          </div>
+        </div>
+      </div>
+
+
       <div className="vh-100 vw-100 d-flex justify-content-center align-items-center">
         <div class="container-fluid text-center text-light">
           <div class="row justify-content-evenly align-items-center vh-100">
-            <div class="col-3 bg-dark d-flex flex-column justify-content-start align-items-center p-5 rounded-2 border border-secondary vh80 overflow-y-scroll scroll-container">
+            <div class="d-none col-xl-3 bg-dark d-xl-flex flex-column justify-content-start align-items-center p-5 rounded-2 border border-secondary vh80 overflow-y-scroll scroll-container">
               <h3 class="fs-2 fw-bold mb-4">Zest Users</h3>
               {accounts &&
                 accounts.map((account, index) => (
@@ -190,12 +255,12 @@ const Home = ({ account, access, setAccess }) => {
                 {!accounts && (<h1 class="fs-6 mt-2 ms-1">No Users</h1>)}
             </div>
             <div
-              class={`col-4 h-100 d-flex flex-column ${posts ? "justify-content-start" : "justify-content-center"} align-items-center overflow-scroll overflow-x-hidden scroll-container`}
+              class={`col-10 col-sm-8 col-md-7 col-lg-6 col-xl-4 h-100 d-flex flex-column ${posts ? "justify-content-start" : "justify-content-center"} align-items-center overflow-scroll overflow-x-hidden scroll-container`}
             >
               {posts &&
                 posts.map((value, index) => (
                   <div
-                    class="card text-center bg-dark text-light border border-secondary my-4 w-100"
+                    class={`card text-center bg-dark text-light border border-secondary w-100 ${index === 0 ? "mt-5 mb-4" : "my-4"} `}
                     key={index}
                   >
                     <div class="card-header d-flex align-items-center">
@@ -217,32 +282,33 @@ const Home = ({ account, access, setAccess }) => {
                 </div>
               )}
             </div>
-            <div class="col-3 border d-flex flex-column justify-content-center align-items-center border border-secondary bg-dark p-5 rounded-2">
+            <div class="d-none col-xl-3 border d-xl-flex flex-column justify-content-center align-items-center border border-secondary bg-dark p-5 rounded-2">
               <form class="container-fluid" onSubmit={CreatePost} noValidate>
                 <div class="container justify-content-center">
-                  <h3 class="mb-4 fs-2 fw-bold">Create Post</h3>
+                  <h3 class="mb-4 fs-4 fw-bold">Create Post</h3>
                   <div class="form-floating mb-3 w-100">
                     <input
                       type="text"
-                      class={`form-control ${empty && !title && "is-invalid"}`}
+                      class={`form-control ${empty && !title && "is-invalid"} ${valid && "is-valid"}`}
                       id="floatingInputDisabled"
                       placeholder="Title"
                       value={title}
                       onChange={(e) => setTitle(e.target.value)}
                     />
                     <label for="floatingInputDisabled">Title</label>
-                    <div class="invalid-feedback">Title is required.</div>
+                    {empty && !title && (<div class="invalid-feedback">Title is required.</div>)}
                   </div>
                   <div class="form-floating mb-4">
                     <textarea
-                      class={`form-control py-5 ${empty && !caption && "is-invalid"}`}
+                      class={`form-control py-5 ${empty && !caption && "is-invalid"} ${valid && "is-valid"}`}
                       placeholder="Caption"
                       id="floatingTextareaDisabled"
                       value={caption}
                       onChange={(e) => setCaption(e.target.value)}
                     />
                     <label for="floatingTextareaDisabled">Caption</label>
-                    <div class="invalid-feedback">Caption is required.</div>
+                    {empty && !caption && (<div class="invalid-feedback">Caption is required.</div>)}
+                    {valid && (<div class="valid-feedback">Done.</div>)}
                   </div>
                   <button type="submit" class="btn btn-primary btn-lg w-100">
                     Submit
@@ -253,6 +319,22 @@ const Home = ({ account, access, setAccess }) => {
           </div>
         </div>
       </div>
+      {spinner && (
+                <div class="position-absolute top-0 start-0 vh-100 vw-100 bg-info bg-opacity-25 d-flex justify-content-center align-items-center cover">
+                  <div class="spinner-border text-primary" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                  </div>
+                </div>
+      )}
+      <button
+        class="d-block d-xl-none btn btn-primary btn-lg position-fixed bottom-0 start-50 translate-middle-x mb-3 z-index-5"
+        type="button"
+        data-bs-toggle="offcanvas"
+        data-bs-target="#staticBackdrop"
+        aria-controls="staticBackdrop"
+      >
+        Create Post
+      </button>
     </>
   );
 };

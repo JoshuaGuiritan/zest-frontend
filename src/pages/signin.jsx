@@ -8,6 +8,7 @@ const SignIn = ({ setAccount, setAccess }) => {
   const [password, setPassword] = useState(null);
   const [empty, setEmpty] = useState(false);
   const [invalid, setInvalid] = useState(false);
+  const [spinner, setSpinner] = useState(false);
 
   const LogIn = async (e) => {
     e.preventDefault();
@@ -24,6 +25,7 @@ const SignIn = ({ setAccount, setAccess }) => {
     };
 
     try {
+      setSpinner(true);
       const res = await fetch(import.meta.env.VITE_POST_SIGNIN, {
         method: "POST",
         headers: {
@@ -33,11 +35,11 @@ const SignIn = ({ setAccount, setAccess }) => {
       });
 
       const verify = await res.json();
-
+      setSpinner(false);
       if (verify.verify) {
         setAccount({ username: verify.username, id: verify.id });
         setAccess(true);
-        navigate("/");
+        navigate("/home");
       } else {
         setInvalid(true);
       }
@@ -50,7 +52,7 @@ const SignIn = ({ setAccount, setAccess }) => {
     <div class="d-flex flex-column justify-content-center align-items-center vh-100 vw-100 text-light">
       <div class="container">
         <div class="row justify-content-center">
-          <div class="col-9 col-sm-8 col-md-7 col-lg-6 col-xl-5 col-xxl-4">
+          <div class="col-10 col-sm-9 col-md-8 col-lg-7 col-xl-6 col-xxl-5">
             <form onSubmit={LogIn} noValidate>
               <div class="container d-flex flex-column justify-content-center align-items-center">
                 <img
@@ -102,6 +104,13 @@ const SignIn = ({ setAccount, setAccess }) => {
                 <Link to="/signup" class="btn btn-secondary btn-lg w-100">
                   Create Account
                 </Link>
+                {spinner && (
+                <div class="position-absolute top-0 start-0 vh-100 vw-100 bg-info bg-opacity-25 d-flex justify-content-center align-items-center">
+                  <div class="spinner-border text-primary" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                  </div>
+                </div>
+                )}
               </div>
             </form>
           </div>
