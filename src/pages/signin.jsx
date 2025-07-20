@@ -32,6 +32,10 @@ const SignIn = ({ setAccount, setAccess }) => {
         body: JSON.stringify(loginAccount),
       });
 
+      if(!res.ok){
+        return;
+      }
+
       const verify = await res.json();
 
       if (verify.verify) {
