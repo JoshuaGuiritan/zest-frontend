@@ -48,7 +48,7 @@ const SignUp = () => {
       if (!verify.verify) {
         return setInvalidU(true);
       }
-      navigate("/");
+      navigate("/signin");
     } catch (err) {
       setMessage("No Fetch! Try Again");
     }
@@ -117,7 +117,7 @@ const SignUp = () => {
                 <button type="submit" class="btn btn-primary btn-lg mb-3 w-100">
                   Sign Up
                 </button>
-                <Link to="/" class="btn btn-secondary btn-lg w-100">
+                <Link to="/signin" class="btn btn-secondary btn-lg w-100">
                   Back to Sign In
                 </Link>
                 {spinner && (

@@ -12,12 +12,12 @@ const App = () => {
     <BrowserRouter>
       <Routes>
         <Route
-          path="/"
+          path="/signin"
           element={<SignIn setAccount={setAccount} setAccess={setAccess} />}
         />
         <Route path="/signup" element={<SignUp />} />
         <Route
-          path="/home"
+          path="/"
           element={
             <Home account={account} access={access} setAccess={setAccess} />
           }

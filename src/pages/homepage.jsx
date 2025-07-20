@@ -32,7 +32,7 @@ const Home = ({ account, access, setAccess }) => {
 
   useEffect(() => {
     if (!log) {
-      navigate("/");
+      navigate("/signin");
     }
   }, []);
 
@@ -144,7 +144,7 @@ const Home = ({ account, access, setAccess }) => {
 
   const logout = () => {
     setAccess(false);
-    navigate("/");
+    navigate("/signin");
   };
 
   return (
