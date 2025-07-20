@@ -57,9 +57,8 @@ const SignIn = ({ setAccount, setAccess }) => {
                   class="navbar-brand logo-signin mb-5"
                   src="Images/logo.png"
                 />
-                <h1 class="mb-5 fs-1 lead">Sign In</h1>
 
-                <div class="form-floating mb-3 w-100">
+                <div class="form-floating mb-5 w-100">
                   <input
                     type="text"
                     class={`form-control ${empty && !username && "is-invalid"} ${invalid && "is-invalid"}`}
@@ -98,10 +97,10 @@ const SignIn = ({ setAccount, setAccess }) => {
                   )}
                 </div>
                 <button type="submit" class="btn btn-primary btn-lg mb-3 w-100">
-                  Submit
+                  Sign In
                 </button>
                 <Link to="/signup" class="btn btn-secondary btn-lg w-100">
-                  Create Account
+                  Create Account Here
                 </Link>
               </div>
             </form>

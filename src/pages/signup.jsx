@@ -62,9 +62,8 @@ const SignUp = () => {
                   class="navbar-brand logo-signin mb-5"
                   src="Images/logo.png"
                 />
-                <h3 class="fs-1 mb-5 lead">Sign Up</h3>
 
-                <div class="form-floating mb-3 w-100">
+                <div class="form-floating mb-5 w-100">
                   <input
                     type="text"
                     class={`form-control form-control-lg ${empty && !username && "is-invalid"} ${invalidU && "is-invalid"}`}
@@ -113,7 +112,7 @@ const SignUp = () => {
                   )}
                 </div>
                 <button type="submit" class="btn btn-primary btn-lg mb-3 w-100">
-                  Submit
+                  Sign Up
                 </button>
                 <Link to="/signin" class="btn btn-secondary btn-lg w-100">
                   Back to Sign In
