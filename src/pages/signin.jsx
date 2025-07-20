@@ -101,7 +101,7 @@ const SignIn = ({ setAccount, setAccess }) => {
                 <button type="submit" class="btn btn-primary btn-lg mb-3 w-100">
                   Sign In
                 </button>
-                <Link to="/signup" class="btn btn-secondary btn-lg w-100">
+                <Link to="/signup" class="btn btn-success btn-lg w-100">
                   Create Account
                 </Link>
                 {spinner && (

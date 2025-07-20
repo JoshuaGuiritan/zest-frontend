@@ -55,7 +55,7 @@ const SignUp = () => {
   };
 
   return (
-    <div class="d-flex flex-column justify-content-center align-items-center vh-100 vw-100 text-light">
+    <div class="d-flex flex-column justify-content-center align-items-center vh-100 vw-100 text-light overflow">
       <div class="container">
         <div class="row justify-content-center">
           <div class="col-10 col-sm-9 col-md-8 col-lg-7 col-xl-6 col-xxl-5">
@@ -117,7 +117,7 @@ const SignUp = () => {
                 <button type="submit" class="btn btn-primary btn-lg mb-3 w-100">
                   Sign Up
                 </button>
-                <Link to="/signin" class="btn btn-secondary btn-lg w-100">
+                <Link to="/signin" class="btn btn-success btn-lg w-100">
                   Back to Sign In
                 </Link>
                 {spinner && (
