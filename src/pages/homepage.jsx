@@ -189,6 +189,7 @@ const Home = ({ account, access, setAccess }) => {
                     <h1 class="fs-6 mt-2 ms-1">{account.username}</h1>
                   </div>
                 ))}
+                {!accounts && (<h1 class="fs-6 mt-2 ms-1">No Users</h1>)}
             </div>
             <div
               class={`col-4 h-100 d-flex flex-column ${posts ? "justify-content-start" : "justify-content-center"} align-items-center overflow-scroll overflow-x-hidden scroll-container`}
