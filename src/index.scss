@@ -1,0 +1,36 @@
+@import "variables";
+
+@import "../node_modules/bootstrap/scss/bootstrap";
+
+body{
+    background-color: #171a1d;
+}
+
+.logo-size{
+    height: 40px;
+}
+
+.logo-signin{
+    height: 80px;
+}
+
+.user-size{
+    font-size: 100px;
+}
+
+.form-w-full{
+    width: 100%;
+}
+
+.scroll-container::-webkit-scrollbar {
+  width: 0px;
+  background: transparent;
+}
+
+.scroll-container::-webkit-scrollbar-thumb {
+  background-color: #6c757d;
+  border-radius: 0px;
+}
+.vh80{
+    max-height: 80%;
+}
