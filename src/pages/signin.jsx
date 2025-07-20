@@ -39,7 +39,7 @@ const SignIn = ({ setAccount, setAccess }) => {
       if (verify.verify) {
         setAccount({ username: verify.username, id: verify.id });
         setAccess(true);
-        navigate("/home");
+        navigate("/");
       } else {
         setInvalid(true);
       }
